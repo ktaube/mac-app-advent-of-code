@@ -3,7 +3,7 @@ import SwiftUI
 struct ContentView: View {
     @State private var selectedDay: Int? = nil
     @State private var challenges = (1...25).map { Challenge(id: $0, title: "Day \($0)") }
-    
+
     var body: some View {
         NavigationSplitView {
             // Sidebar with list of days
@@ -20,7 +20,9 @@ struct ContentView: View {
             }
             .navigationTitle("Advent of Code 2024")
         } detail: {
-            if let selectedDay {
+            if selectedDay == 1 {
+                ChallengeDayOneView()
+            } else if let selectedDay {
                 ChallengeView(day: selectedDay)
             } else {
                 Text("Select a day to begin solving")
