@@ -5,6 +5,8 @@ struct ChallengeDayOneView: View {
     @State private var part1Solution: String = ""
     @State private var part2Solution: String = ""
     @State private var isLoading: Bool = false
+    
+    let inputFileName: String
 
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
@@ -16,14 +18,16 @@ struct ChallengeDayOneView: View {
                     .font(.system(.body, design: .monospaced))
                     .frame(height: 200)
             }
-
+            
             HStack {
                 Button("Solve Part 1") {
                     solvePart1()
                 }
+                .disabled(inputFileName.isEmpty)
                 Button("Solve Part 2") {
                     solvePart2()
                 }
+                .disabled(inputFileName.isEmpty)
             }
 
             GroupBox("Solutions") {
@@ -44,8 +48,22 @@ struct ChallengeDayOneView: View {
     }
 
     private func solvePart1() {
+        var leftList = [Int]()
+        var rightList = [Int]()
+        
+        let inputArray  = input.split(separator: "\n")
+        
+        for line in inputArray {
+            let numbers = line.split(separator: " ")
+            leftList.append(Int(numbers[0])!)
+            rightList.append(Int(numbers[1])!)
+        }
+        
+        leftList = leftList.sorted()
+        rightList = rightList.sorted()
+        
         // Implement solution for part 1
-        part1Solution = "Not implemented yet"
+        part1Solution = "leftList: \(leftList[0]); rightList: \(rightList[0])"
     }
 
     private func solvePart2() {
@@ -55,7 +73,7 @@ struct ChallengeDayOneView: View {
 
     private func loadInput() {
         isLoading = true
-        if let path = Bundle.main.path(forResource: "day-1", ofType: "txt"),
+        if let path = Bundle.main.path(forResource: inputFileName, ofType: "txt"),
             let contents = try? String(contentsOfFile: path, encoding: .utf8)
         {
             input = contents
